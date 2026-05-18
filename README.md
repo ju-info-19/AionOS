@@ -22,13 +22,4 @@ Il ne cherche pas à remplacer Windows/Linux pour le grand public, mais à offri
 
 ## Statut du projet
 
-🚧 **Phase 1 – MVP** en cours : noyau fonctionnel, agent manager Rust, démo sur QEMU.
-
-## Installation rapide (sur QEMU)
-
-```bash
-git clone https://github.com/aionos/AionOS
-cd AionOS
-make deps          # installe les outils nécessaires (docker, qemu, rust...)
-make build         # compile noyau, busybox, agent manager
-make run-qemu      # lance l’OS dans QEMU
+🚧 **Phase 1 – MVP** en cours : noyau fonctionnel, agent manager Rust.
