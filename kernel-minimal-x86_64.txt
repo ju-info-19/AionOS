@@ -1,0 +1,59 @@
+# AionOS – Minimal Linux 6.x config for x86_64
+# Generated with make tinyconfig + added features
+
+CONFIG_64BIT=y
+CONFIG_X86_64=y
+CONFIG_EMBEDDED=y
+CONFIG_SLOB=y
+CONFIG_SMP=y
+CONFIG_PREEMPT_VOLUNTARY=y
+
+# No block layer (we use initrd/initramfs)
+CONFIG_BLOCK=n
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_INITRAMFS_SOURCE=""
+
+# Required for busybox
+CONFIG_SYSVIPC=y
+CONFIG_POSIX_MQUEUE=y
+CONFIG_DEVTMPFS=y
+CONFIG_TMPFS=y
+CONFIG_PROC_FS=y
+CONFIG_SYSFS=y
+
+# Serial console
+CONFIG_SERIAL_8250=y
+CONFIG_SERIAL_8250_CONSOLE=y
+CONFIG_CONSOLE_POLL=y
+
+# Minimal network (for agent API)
+CONFIG_NET=y
+CONFIG_PACKET=y
+CONFIG_UNIX=y
+CONFIG_INET=y
+CONFIG_IPV6=n
+
+# No GPU, sound, USB
+CONFIG_DRM=n
+CONFIG_SOUND=n
+CONFIG_USB=n
+CONFIG_PCI=n   # QEMU virtio? On garde basique
+
+# Cgroups pour l'isolation des agents
+CONFIG_CGROUPS=y
+CONFIG_CGROUP_CPUACCT=y
+CONFIG_CGROUP_DEVICE=y
+CONFIG_NAMESPACES=y
+CONFIG_USER_NS=y
+
+# Agent manager needs epoll
+CONFIG_EPOLL=y
+
+# Disable almost all drivers
+CONFIG_MISC_DEVICES=n
+CONFIG_INPUT=n
+CONFIG_HID=n
+
+# Size optimizations
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+CONFIG_KALLSYMS=n
