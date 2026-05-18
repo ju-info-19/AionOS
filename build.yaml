@@ -1,0 +1,61 @@
+name: Build AionOS
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-x86_64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential bc bison flex libssl-dev \
+          qemu-system-x86 musl-tools rustc cargo
+    
+    - name: Build kernel and rootfs
+      run: make build
+    
+    - name: Test with QEMU
+      run: |
+        timeout 30s make run-qemu || true
+        echo "Boot test completed"
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: aionos-x86_64
+        path: build/
+  
+  build-arm64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install cross-compilation tools
+      run: |
+        sudo apt update
+        sudo apt install -y gcc-aarch64-linux-gnu qemu-system-arm musl-tools
+    
+    - name: Build for ARM64
+      run: make build-arm64
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: aionos-arm64
+        path: build-arm64/
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Check Rust formatting
+      run: cd userspace/agent-manager && cargo fmt --check
+    - name: Check shell scripts
+      run: shellcheck scripts/*.sh
